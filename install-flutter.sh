@@ -1,22 +1,25 @@
 #!/bin/bash
-echo "1. Downloading Flutter SDK..."
-curl -L https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.1-stable.tar.xz -o flutter.tar.xz
+echo "Installing Flutter SDK..."
 
-echo "2. Extracting..."
+# 1. Скачиваем более новую версию Flutter
+FLUTTER_VERSION="3.38.5"  # Или "stable" для самой свежей стабильной
+curl -L https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -o flutter.tar.xz
+
+# 2. Распаковываем
 tar -xf flutter.tar.xz
 
-echo "3. Setting up environment..."
-# Добавляем Flutter в PATH двумя способами для надежности
+# 3. Настраиваем PATH
 export PATH="$PATH:$(pwd)/flutter/bin"
-# Создаем файл для сохранения PATH между этапами сборки Vercel
 echo "export PATH=\"\$PATH:$(pwd)/flutter/bin\"" > /tmp/flutter-path.sh
-source /tmp/flutter-path.sh
+chmod +x /tmp/flutter-path.sh
 
-echo "4. Configuring Git safe directory..."
-# Решаем проблему dubious ownership
+# 4. Git конфигурация
 git config --global --add safe.directory $(pwd)/flutter
+git config --global --add safe.directory /vercel/path0
 
-echo "5. Enabling Flutter web..."
-$(pwd)/flutter/bin/flutter config --enable-web --no-analytics
+# 5. Настраиваем Flutter
+./flutter/bin/flutter config --enable-web --no-analytics --no-cli-animations
 
-echo "6. Installation complete."
+# 6. Проверяем версию
+echo "Flutter version:"
+./flutter/bin/flutter --version
