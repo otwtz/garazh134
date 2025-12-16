@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'АВТОСЕРВИС',
+              'ГАРАЖ134',
               style: GoogleFonts.montserrat(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
